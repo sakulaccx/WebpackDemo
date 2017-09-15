@@ -25,7 +25,7 @@
 	color: #000;
 }
 .date{
-	margin-top: 30px;
+	margin-top: 20px;
 	width: 200px;
 	line-height: 30px;
 	font-size: 12px;
@@ -41,7 +41,7 @@
 	text-indent: 5px;
 }
 .iscroll_wrap{
-	margin-top: 30px;
+	margin-top: 20px;
 }
 .iscroll_obj{
 	position: relative;
@@ -60,6 +60,6 @@
 	color: #4ea876;
 }
 .url_test{
-	margin-top: 40px;
+	margin-top: 20px;
 	width: 200px;
 }
