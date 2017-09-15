@@ -101,7 +101,8 @@ module.exports = {
 			url: "../common/url",
 			flatpickr: "../common/flatpickr",
 			IScroll: "../common/iscroll",
-			_Date: "../common/date"
+			_Date: "../common/date",
+			template: "../common/template"
 		}),
 		new HtmlWebpackPlugin({ //根据模板插入css/js等生成最终HTML
 			//favicon: "./src/img/favicon.ico", //favicon路径，通过webpack引入同时可以生成hash值

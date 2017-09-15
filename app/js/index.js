@@ -30,3 +30,6 @@ var myScroll = new IScroll(".iscroll_obj",{
 	mouseWheel: true,
     scrollbars: true
 });
+
+//测试template
+$(".wrapper").append(template("test",{data:"Arttemplate test"}));
