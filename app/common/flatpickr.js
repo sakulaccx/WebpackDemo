@@ -1291,7 +1291,7 @@ function FlatpickrInstance(element, config) {
 
 		var shouldChangeMonth = selectedDate.getMonth() !== self.currentMonth && self.config.mode !== "range";
 		/*Hack by cooper*/
-		/*ËÆæÁΩÆ‰∏çËá™Âä®Ë∑≥ËΩ¨Êúà‰ªΩ*/
+		/*…Ë÷√≤ª◊‘∂ØÃ¯◊™‘¬∑›*/
 		shouldChangeMonth = false;
 
 		self.selectedDateElem = e.target;
@@ -2316,14 +2316,30 @@ flatpickr.setDefaults = function (config) {
 };
 
 /* istanbul ignore next */
+Date.prototype.fp_incr = function (days) {
+	return new Date(this.getFullYear(), this.getMonth(), this.getDate() + parseInt(days, 10));
+};
+
 if (typeof jQuery !== "undefined") {
 	jQuery.fn.flatpickr = function (config) {
 		return _flatpickr(this, config);
 	};
 }
 
-Date.prototype.fp_incr = function (days) {
-	return new Date(this.getFullYear(), this.getMonth(), this.getDate() + parseInt(days, 10));
-};
-
 if (typeof module !== "undefined") module.exports = flatpickr;
+
+/*if ( typeof module != 'undefined' && module.exports ) {
+    module.exports = flatpickr;
+} else if (typeof window.define === 'function' && window.define.amd) {
+    window.define('js-url', [], function () {
+        return flatpickr;
+    });
+} else {
+    if (typeof jQuery !== "undefined") {
+		jQuery.fn.flatpickr = function (config) {
+			return _flatpickr(this, config);
+		};
+	}
+
+    window.flatpickr = flatpickr;
+}*/

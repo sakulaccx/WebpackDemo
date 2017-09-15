@@ -858,4 +858,9 @@
         }
         ) : this._toString();
     };
+
+    if ( typeof module != 'undefined' && module.exports ) {
+        module.exports = $D;
+    }
+
 }());    

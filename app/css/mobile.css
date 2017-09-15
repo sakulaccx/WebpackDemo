@@ -1,11 +1,16 @@
 /* 
-	Index.html
+	mobile.html
 */
 /* Common css */
 .wrapper{
+	position: absolute;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
+.content{
 	padding: 20px;
 }
 .txt_title{
@@ -24,15 +29,6 @@
 	width: 200px;
 	line-height: 30px;
 	font-size: 12px;
-}
-.test_datejs{
-	margin-top: 20px;
-}
-.show_date_txt{
-	height: 30px;
-	line-height: 30px;
-	font-size: 14px;
-	color: #ea5d5d;
 }
 .flatpickr_input{
 	display: inline-block;

@@ -182,7 +182,7 @@
         };
     })();
 
-	if (typeof window.define === 'function' && window.define.amd) {
+	/*if (typeof window.define === 'function' && window.define.amd) {
 		window.define('js-url', [], function () {
 		    return url;
 		});
@@ -194,6 +194,22 @@
 		}
 
 		window.url = url;
-	}
+	}*/
+
+    if ( typeof module != 'undefined' && module.exports ) {
+        module.exports = url;
+    } else if (typeof window.define === 'function' && window.define.amd) {
+        window.define('js-url', [], function () {
+            return url;
+        });
+    } else {
+        if(typeof window.jQuery !== 'undefined') {
+            window.jQuery.extend({
+                url: function(arg, url) { return window.url(arg, url); }
+            });
+        }
+
+        window.url = url;
+    }
 
 })();

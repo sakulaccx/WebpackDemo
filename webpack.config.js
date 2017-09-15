@@ -1,69 +1,67 @@
-let _w = require("webpack");	//æ ¸å¿ƒç»„ä»¶
+let _w = require("webpack"); //ºËĞÄ×é¼ş
 let _path = require("path");
-let HtmlWebpackPlugin = require("html-webpack-plugin");	//è‡ªåŠ¨ç”ŸæˆHTMLçš„æ’ä»¶
-let ExtractTextPlugin = require("extract-text-webpack-plugin"); //å°†cssç‹¬ç«‹å¼•å…¥å˜æˆlinkæ ‡ç­¾ï¼Œä½¿ç”¨è¯¥æ’ä»¶éœ€è¦ç‹¬ç«‹ä¸‹è½½"npm install extract-text-webpack-plugin --save-dev", åŒæ—¶ä¸‹é¢çš„rulesä¹Ÿå¿…é¡»æ›´æ”¹
+let HtmlWebpackPlugin = require("html-webpack-plugin"); //×Ô¶¯Éú³ÉHTMLµÄ²å¼ş
+let ExtractTextPlugin = require("extract-text-webpack-plugin"); //½«css¶ÀÁ¢ÒıÈë±ä³Élink±êÇ©£¬Ê¹ÓÃ¸Ã²å¼şĞèÒª¶ÀÁ¢ÏÂÔØ"npm install extract-text-webpack-plugin --save-dev", Í¬Ê±ÏÂÃæµÄrulesÒ²±ØĞë¸ü¸Ä
 
 
 module.exports = {
-	target: "web", //æ‰“åŒ…ç±»å‹ï¼Œå°†ä»£ç æ‰“åŒ…æˆå¯¹åº”å¹³å°å¯ç¼–è¯‘çš„ä»£ç  web|webworker|node|node-webkit ...
-	context: _path.resolve(__dirname,"app"), //é…ç½®webpackè¯»å–æ‰€æœ‰éœ€è¦æ‰“åŒ…æ–‡ä»¶çš„æ ¹ç›®å½•
-	entry: {//å…¥å£æ–‡ä»¶ï¼Œè·¯å¾„æ˜¯ç›¸å¯¹äºä¸Šé¢çš„contextçš„
+	target: "web", //´ò°üÀàĞÍ£¬½«´úÂë´ò°ü³É¶ÔÓ¦Æ½Ì¨¿É±àÒëµÄ´úÂë web|webworker|node|node-webkit ...
+	context: _path.resolve(__dirname, "app"), //ÅäÖÃwebpack¶ÁÈ¡ËùÓĞĞèÒª´ò°üÎÄ¼şµÄ¸ùÄ¿Â¼
+	entry: { //Èë¿ÚÎÄ¼ş£¬Â·¾¶ÊÇÏà¶ÔÓÚÉÏÃæµÄcontextµÄ
 		index: "./js/index.js",
-		product: "./js/product.js"
-	}, 
-	output: {//output çš„é…ç½®é¡¹å’Œ context æ²¡æœ‰å…³ç³»ï¼Œå»ºè®®é…ç½®ä¸ºç»å¯¹è·¯å¾„ï¼ˆç›¸å¯¹è·¯å¾„ä¸ä¼šæŠ¥é”™ï¼‰
-		path: _path.resolve(__dirname,"dist"), //æ‰“åŒ…è¾“å‡ºçš„è·¯å¾„
-		filename: "js/[name].js",	//æ‰“åŒ…åçš„JS [name]-[hash]åœ¨æ¯æ¬¡æ‰“åŒ…ç”Ÿæˆä¸åŒçš„hashï¼Œæ›´æ–°æµè§ˆå™¨ç¼“å­˜		
+		mobile: "./js/mobile.js"
 	},
-	devtool: "eval-source-map", //source map é…ç½®
-	devServer: {	//é™æ€é¡µé¢æœåŠ¡é…ç½®
+	output: { //output µÄÅäÖÃÏîºÍ context Ã»ÓĞ¹ØÏµ£¬½¨ÒéÅäÖÃÎª¾ø¶ÔÂ·¾¶£¨Ïà¶ÔÂ·¾¶²»»á±¨´í£©
+		path: _path.resolve(__dirname, "dist"), //´ò°üÊä³öµÄÂ·¾¶
+		filename: "js/[name].js", //´ò°üºóµÄJS [name]-[hash]ÔÚÃ¿´Î´ò°üÉú³É²»Í¬µÄhash£¬¸üĞÂä¯ÀÀÆ÷»º´æ		
+	},
+	devtool: "eval-source-map", //source map ÅäÖÃ
+	devServer: { //¾²Ì¬Ò³Ãæ·şÎñÅäÖÃ
 		/*
-			contentBaseè®¾ç½®æœåŠ¡å™¨æ ¹ç›®å½•(htmlæ‰€åœ¨ç›®å½•),
-			å¦‚æœHTMLç›´æ¥åœ¨distç›®å½•ä¸‹,åˆ™ä¸éœ€è¦é…ç½®contentBase
-			å¦‚æœHTMLæ”¾åœ¨dist/folderä¸‹ï¼Œåˆ™éœ€è¦é…ç½®contentBaseï¼Œç„¶åå†é…ç½®publicPath
-			å¦‚æœHTMLæ”¾åœ¨dist/folderä¸‹é‚£ä¹ˆpublicPathéœ€è¦è®¾ç½®ä¸º"/"
-			è¿™æ ·æœåŠ¡å™¨å¯åŠ¨åç›´æ¥èƒ½å¤Ÿè¯»å–åˆ°é¡µé¢å’Œé¡µé¢æ‰€åŠ è½½çš„é™æ€èµ„æºæ–‡ä»¶
+			contentBaseÉèÖÃ·şÎñÆ÷¸ùÄ¿Â¼(htmlËùÔÚÄ¿Â¼),
+			Èç¹ûHTMLÖ±½ÓÔÚdistÄ¿Â¼ÏÂ,Ôò²»ĞèÒªÅäÖÃcontentBase
+			Èç¹ûHTML·ÅÔÚdist/folderÏÂ£¬ÔòĞèÒªÅäÖÃcontentBase£¬È»ºóÔÙÅäÖÃpublicPath
+			Èç¹ûHTML·ÅÔÚdist/folderÏÂÄÇÃ´publicPathĞèÒªÉèÖÃÎª"/"
+			ÕâÑù·şÎñÆ÷Æô¶¯ºóÖ±½ÓÄÜ¹»¶ÁÈ¡µ½Ò³ÃæºÍÒ³ÃæËù¼ÓÔØµÄ¾²Ì¬×ÊÔ´ÎÄ¼ş
 		*/
-		port: "8099",	//ç«¯å£å·
-		inline: true,	//å®æ—¶åˆ·æ–°(ä¸é‡å¯æœåŠ¡ç›´æ¥åˆ·æ–°)ï¼Œéœ€é…åˆHotModuleReplacementPlugin()æ’ä»¶ä¸€èµ·ä½¿ç”¨ï¼Œä¸‹æ–¹pluginä¸­å¿…é¡»è°ƒç”¨è¯¥webpackè‡ªå¸¦çš„æ’ä»¶
-		historyApiFallback: true,	//æ‰€æœ‰çš„å†å²è¿”å›éƒ½æŒ‡å‘index.htmlï¼Œé€‚åˆå•é¡µåº”ç”¨
-		compress: true, //æ˜¯å¦å‹ç¼©HTML
-		contentBase: _path.resolve(__dirname,"dist/view"),	//è‡ªåŠ¨ç”Ÿæˆå…¥å£HTMLçš„ç›®å½•		
-		publicPath: "/",//è®¾ç½®å…¬ç”¨é™æ€æ–‡ä»¶ç›®å½•ä¸ºæ ¹ç›®å½•ï¼ŒHTMLä¸­çš„ç›¸å¯¹è·¯å¾„çš„é™æ€èµ„æºå°±å¯ä»¥æ­£ç¡®å¼•ç”¨äº†ï¼Œå¦åˆ™htmlå¿…é¡»åœ¨æ ¹ç›®å½•ä¸‹(dist/index.html)
+		port: "8099", //¶Ë¿ÚºÅ
+		inline: true, //ÊµÊ±Ë¢ĞÂ(²»ÖØÆô·şÎñÖ±½ÓË¢ĞÂ)£¬ĞèÅäºÏHotModuleReplacementPlugin()²å¼şÒ»ÆğÊ¹ÓÃ£¬ÏÂ·½pluginÖĞ±ØĞëµ÷ÓÃ¸Ãwebpack×Ô´øµÄ²å¼ş
+		historyApiFallback: true, //ËùÓĞµÄÀúÊ··µ»Ø¶¼Ö¸Ïòindex.html£¬ÊÊºÏµ¥Ò³Ó¦ÓÃ
+		compress: true, //ÊÇ·ñÑ¹ËõHTML
+		contentBase: _path.resolve(__dirname, "dist/view"), //×Ô¶¯Éú³ÉÈë¿ÚHTMLµÄÄ¿Â¼		
+		publicPath: "/", //ÉèÖÃ¹«ÓÃ¾²Ì¬ÎÄ¼şÄ¿Â¼Îª¸ùÄ¿Â¼£¬HTMLÖĞµÄÏà¶ÔÂ·¾¶µÄ¾²Ì¬×ÊÔ´¾Í¿ÉÒÔÕıÈ·ÒıÓÃÁË£¬·ñÔòhtml±ØĞëÔÚ¸ùÄ¿Â¼ÏÂ(dist/index.html)
 	},
 	module: {
-		noParse: function(content){ //é˜²æ­¢ webpack è§£æé‚£äº›ä»»ä½•ä¸ç»™å®šæ­£åˆ™è¡¨è¾¾å¼ç›¸åŒ¹é…çš„æ–‡ä»¶
-			return /jquery|template|underscore-min|lodash/.test(content);
+		noParse: function(content) { //·ÀÖ¹ webpack ½âÎöÄÇĞ©ÈÎºÎÓë¸ø¶¨ÕıÔò±í´ïÊ½ÏàÆ¥ÅäµÄÎÄ¼ş
+			return /jquery|template|underscore-min/.test(content); //|url|flatpickr|iscroll|lodash
 		},
-		rules: [
-			{//åŠ è½½JS
-				test: /(\.jsx|\.js)$/,	//åŒ¹é…loaderçš„æ­£åˆ™ï¼ŒåŒ¹é…JS,JSX
-				use: ["babel-loader"],	//ES6è½¬æ¢å™¨
-				exclude: /node_modules/	//æ’é™¤node_modules
-			},
-			{//åŠ è½½CSS
-				test: /\.css$/,	//åŒ¹é…CSSçš„æ­£åˆ™
+		rules: [{ //¼ÓÔØJS
+				test: /(\.jsx|\.js)$/, //Æ¥ÅäloaderµÄÕıÔò£¬Æ¥ÅäJS,JSX
+				use: ["babel-loader"], //ES6×ª»»Æ÷
+				exclude: /node_modules/ //ÅÅ³ınode_modules
+			}, { //¼ÓÔØCSS
+				test: /\.css$/, //Æ¥ÅäCSSµÄÕıÔò
 				use: ExtractTextPlugin.extract({
 					fallback: "style-loader",
 					use: "css-loader"
 				}),
-				exclude: /node_modules/ //æ’é™¤node_modules
+				exclude: /node_modules/ //ÅÅ³ınode_modules
 			},
 			/*{
-				//htmlæ¨¡æ¿åŠ è½½å™¨ï¼Œå¯ä»¥å¤„ç†å¼•ç”¨çš„é™æ€èµ„æºï¼Œé»˜è®¤é…ç½®å‚æ•°attrs=img:srcï¼Œå¤„ç†å›¾ç‰‡çš„srcå¼•ç”¨çš„èµ„æº
-                //æ¯”å¦‚ä½ é…ç½®ï¼Œattrs=img:src img:data-srcå°±å¯ä»¥ä¸€å¹¶å¤„ç†data-srcå¼•ç”¨çš„èµ„æºäº†ï¼Œå°±åƒä¸‹é¢è¿™æ ·
+				//htmlÄ£°å¼ÓÔØÆ÷£¬¿ÉÒÔ´¦ÀíÒıÓÃµÄ¾²Ì¬×ÊÔ´£¬Ä¬ÈÏÅäÖÃ²ÎÊıattrs=img:src£¬´¦ÀíÍ¼Æ¬µÄsrcÒıÓÃµÄ×ÊÔ´
+                //±ÈÈçÄãÅäÖÃ£¬attrs=img:src img:data-src¾Í¿ÉÒÔÒ»²¢´¦Àídata-srcÒıÓÃµÄ×ÊÔ´ÁË£¬¾ÍÏñÏÂÃæÕâÑù
 				test: /\.html$/,
                 use: "html?attrs=img:src img:data-src"
 			},
 			{
-                //æ–‡ä»¶åŠ è½½å™¨ï¼Œå¤„ç†æ–‡ä»¶é™æ€èµ„æº
+                //ÎÄ¼ş¼ÓÔØÆ÷£¬´¦ÀíÎÄ¼ş¾²Ì¬×ÊÔ´
                 test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                 use: "file-loader?name=./fonts/[name].[ext]"
             },*/
 			{
-				//å›¾ç‰‡åŠ è½½å™¨ï¼Œé›·åŒfile-loaderï¼Œæ›´é€‚åˆå›¾ç‰‡ï¼Œå¯ä»¥å°†è¾ƒå°çš„å›¾ç‰‡è½¬æˆbase64ï¼Œå‡å°‘httpè¯·æ±‚
-                //å¦‚ä¸‹é…ç½®ï¼Œå°†å°äº8192byteçš„å›¾ç‰‡è½¬æˆbase64ç 
-				test: /\.(jpe?g|png|gif|svg)$/i, 
+				//Í¼Æ¬¼ÓÔØÆ÷£¬À×Í¬file-loader£¬¸üÊÊºÏÍ¼Æ¬£¬¿ÉÒÔ½«½ÏĞ¡µÄÍ¼Æ¬×ª³Ébase64£¬¼õÉÙhttpÇëÇó
+				//ÈçÏÂÅäÖÃ£¬½«Ğ¡ÓÚ8192byteµÄÍ¼Æ¬×ª³Ébase64Âë
+				test: /\.(jpe?g|png|gif|svg)$/i,
 				use: [
 					"url?limit=8192&name=img/[hash:8].[name].[ext]",
 					"image-webpack"
@@ -72,50 +70,66 @@ module.exports = {
 		]
 	},
 	plugins: [
-        new _w.BannerPlugin("webpack test1"),	//webpackè‡ªå¸¦ï¼Œç»™ç”Ÿæˆåçš„JSæ·»åŠ ç‰ˆæƒæˆ–è¯´æ˜çš„æ’ä»¶
-        new _w.optimize.OccurrenceOrderPlugin(), //æ ¹æ®æ¨¡å—è°ƒç”¨æ¬¡æ•°ï¼Œç»™æ¨¡å—åˆ†é…idsï¼Œå¸¸è¢«è°ƒç”¨çš„idsåˆ†é…æ›´çŸ­çš„idï¼Œä½¿å¾—idså¯é¢„æµ‹ï¼Œé™ä½æ–‡ä»¶å¤§å°ï¼Œè¯¥æ¨¡å—æ¨èä½¿ç”¨
-        new _w.optimize.UglifyJsPlugin({ //JSæ··æ·†
-        	mangle: {
-        		// é…ç½®ä»¥ä¸‹åˆ—è¡¨, åœ¨æ··æ·†ä»£ç æ—¶, ä»¥ä¸‹é…ç½®çš„å˜é‡, ä¸ä¼šè¢«æ··æ·†
-        		except: ['$super', '$', 'exports', 'require','_']
-        	}
-        }),
-        new _w.optimize.MinChunkSizePlugin({ //ä»£ç å‹ç¼©
-        	compress: {
-        		warnings: false
-        	}
-        }),
-        new ExtractTextPlugin({filename: "css/[name].css"}), //å°†CSSä»¥<link>æ ‡ç­¾å½¢å¼æ’å…¥é¡µé¢è€Œä¸æ˜¯ç”Ÿæˆåˆ°webpackæ‰“åŒ…çš„JSä¸­ï¼Œé¿å…ä»£ç å‡ºé”™æˆ–ä¸å¥½è°ƒè¯•
-        new _w.ProvidePlugin({//å¼•å…¥ä¸€äº›å…¬ç”¨æ’ä»¶å¦‚jQuery
-        	$: "../common/jquery-3.2.1.min",
-        	_: "../common/underscore-min",
-        	url: "../common/url"
-        }), 
-        new HtmlWebpackPlugin({ //æ ¹æ®æ¨¡æ¿æ’å…¥css/jsç­‰ç”Ÿæˆæœ€ç»ˆHTML
-            //favicon: "./src/img/favicon.ico", //faviconè·¯å¾„ï¼Œé€šè¿‡webpackå¼•å…¥åŒæ—¶å¯ä»¥ç”Ÿæˆhashå€¼
-            filename: "./view/index.html", //ç”Ÿæˆçš„htmlå­˜æ”¾è·¯å¾„ï¼Œç›¸å¯¹äºpath
-            template: "./tpl/index.tpl.html", //htmlæ¨¡æ¿è·¯å¾„
-            inject: "body", //jsæ’å…¥çš„ä½ç½®ï¼Œtrue/"head"/"body"/false
-            hash: true, //ä¸ºé™æ€èµ„æºç”Ÿæˆhashå€¼
-            chunks: ["index"],//éœ€è¦å¼•å…¥çš„chunkï¼Œä¸é…ç½®å°±ä¼šå¼•å…¥æ‰€æœ‰é¡µé¢çš„èµ„æº
-            minify: { //å‹ç¼©HTMLæ–‡ä»¶    
-                removeComments: true, //ç§»é™¤HTMLä¸­çš„æ³¨é‡Š
-                collapseWhitespace: false //åˆ é™¤ç©ºç™½ç¬¦ä¸æ¢è¡Œç¬¦
-            }
-        }),
-        new HtmlWebpackPlugin({ //æ ¹æ®æ¨¡æ¿æ’å…¥css/jsç­‰ç”Ÿæˆæœ€ç»ˆHTML
-            //favicon: "./src/img/favicon.ico", //faviconè·¯å¾„ï¼Œé€šè¿‡webpackå¼•å…¥åŒæ—¶å¯ä»¥ç”Ÿæˆhashå€¼
-            filename: "./view/product.html", //ç”Ÿæˆçš„htmlå­˜æ”¾è·¯å¾„ï¼Œç›¸å¯¹äºpath
-            template: "./tpl/product.tpl.html", //htmlæ¨¡æ¿è·¯å¾„
-            inject: "body", //jsæ’å…¥çš„ä½ç½®ï¼Œtrue/"head"/"body"/false
-            hash: true, //ä¸ºé™æ€èµ„æºç”Ÿæˆhashå€¼ï¼Œè¿™æ ·å°±ä¸éœ€è¦åœ¨outputçš„filenameååŠ [hash]ï¼Œå¦åˆ™ä¼šå¯¼è‡´é¡µé¢è¯»å–ä¸åˆ°å¯¹åº”çš„JS
-            chunks: ["product"],//éœ€è¦å¼•å…¥çš„chunkï¼Œä¸é…ç½®å°±ä¼šå¼•å…¥æ‰€æœ‰é¡µé¢çš„èµ„æº
-            minify: { //å‹ç¼©HTMLæ–‡ä»¶    
-                removeComments: true, //ç§»é™¤HTMLä¸­çš„æ³¨é‡Š
-                collapseWhitespace: false //åˆ é™¤ç©ºç™½ç¬¦ä¸æ¢è¡Œç¬¦
-            }
-        }),
+		new _w.BannerPlugin("webpack test1"), //webpack×Ô´ø£¬¸øÉú³ÉºóµÄJSÌí¼Ó°æÈ¨»òËµÃ÷µÄ²å¼ş
+		new _w.optimize.OccurrenceOrderPlugin(), //¸ù¾İÄ£¿éµ÷ÓÃ´ÎÊı£¬¸øÄ£¿é·ÖÅäids£¬³£±»µ÷ÓÃµÄids·ÖÅä¸ü¶ÌµÄid£¬Ê¹µÃids¿ÉÔ¤²â£¬½µµÍÎÄ¼ş´óĞ¡£¬¸ÃÄ£¿éÍÆ¼öÊ¹ÓÃ
+		new _w.optimize.UglifyJsPlugin({ //JS»ìÏı
+			mangle: {
+				// ÅäÖÃÒÔÏÂÁĞ±í, ÔÚ»ìÏı´úÂëÊ±, ÒÔÏÂÅäÖÃµÄ±äÁ¿, ²»»á±»»ìÏı
+				except: [
+					'$super',
+					'$',
+					'exports',
+					'require',
+					'_',
+					//'url',
+					//'iscroll',
+					//'flatpickr'
+				]
+			}
+		}),
+		new _w.optimize.MinChunkSizePlugin({ //´úÂëÑ¹Ëõ
+			compress: {
+				warnings: false
+			}
+		}),
+		new ExtractTextPlugin({
+			filename: "css/[name].css"
+		}), //½«CSSÒÔ<link>±êÇ©ĞÎÊ½²åÈëÒ³Ãæ¶ø²»ÊÇÉú³Éµ½webpack´ò°üµÄJSÖĞ£¬±ÜÃâ´úÂë³ö´í»ò²»ºÃµ÷ÊÔ
+		new _w.ProvidePlugin({ //ÒıÈëÒ»Ğ©¹«ÓÃ²å¼şÈçjQuery
+			$: "../common/jquery-3.2.1.min",
+			_: "../common/underscore-min",
+			url: "../common/url",
+			flatpickr: "../common/flatpickr",
+			IScroll: "../common/iscroll",
+			_Date: "../common/date"
+		}),
+		new HtmlWebpackPlugin({ //¸ù¾İÄ£°å²åÈëcss/jsµÈÉú³É×îÖÕHTML
+			//favicon: "./src/img/favicon.ico", //faviconÂ·¾¶£¬Í¨¹ıwebpackÒıÈëÍ¬Ê±¿ÉÒÔÉú³ÉhashÖµ
+			filename: "./view/index.html", //Éú³ÉµÄhtml´æ·ÅÂ·¾¶£¬Ïà¶ÔÓÚpath
+			template: "./tpl/index.tpl.html", //htmlÄ£°åÂ·¾¶
+			cache: false, //²»»º´æÒ³Ãæ
+			inject: "body", //js²åÈëµÄÎ»ÖÃ£¬true/"head"/"body"/false
+			hash: true, //Îª¾²Ì¬×ÊÔ´Éú³ÉhashÖµ
+			chunks: ["index"], //ĞèÒªÒıÈëµÄchunk£¬²»ÅäÖÃ¾Í»áÒıÈëËùÓĞÒ³ÃæµÄ×ÊÔ´
+			minify: { //Ñ¹ËõHTMLÎÄ¼ş    
+				removeComments: true, //ÒÆ³ıHTMLÖĞµÄ×¢ÊÍ
+				collapseWhitespace: false //É¾³ı¿Õ°×·ûÓë»»ĞĞ·û
+			}
+		}),
+		new HtmlWebpackPlugin({ //¸ù¾İÄ£°å²åÈëcss/jsµÈÉú³É×îÖÕHTML
+			//favicon: "./src/img/favicon.ico", //faviconÂ·¾¶£¬Í¨¹ıwebpackÒıÈëÍ¬Ê±¿ÉÒÔÉú³ÉhashÖµ
+			filename: "./view/mobile.html", //Éú³ÉµÄhtml´æ·ÅÂ·¾¶£¬Ïà¶ÔÓÚpath
+			template: "./tpl/mobile.tpl.html", //htmlÄ£°åÂ·¾¶
+			cache: false, //²»»º´æÒ³Ãæ
+			inject: "body", //js²åÈëµÄÎ»ÖÃ£¬true/"head"/"body"/false
+			hash: true, //Îª¾²Ì¬×ÊÔ´Éú³ÉhashÖµ£¬ÕâÑù¾Í²»ĞèÒªÔÚoutputµÄfilenameºó¼Ó[hash]£¬·ñÔò»áµ¼ÖÂÒ³Ãæ¶ÁÈ¡²»µ½¶ÔÓ¦µÄJS
+			chunks: ["mobile"], //ĞèÒªÒıÈëµÄchunk£¬²»ÅäÖÃ¾Í»áÒıÈëËùÓĞÒ³ÃæµÄ×ÊÔ´
+			minify: { //Ñ¹ËõHTMLÎÄ¼ş    
+				removeComments: true, //ÒÆ³ıHTMLÖĞµÄ×¢ÊÍ
+				collapseWhitespace: false //É¾³ı¿Õ°×·ûÓë»»ĞĞ·û
+			}
+		}),
 
-        new _w.HotModuleReplacementPlugin()  //çƒ­æ›´æ–°
-    ]
+		new _w.HotModuleReplacementPlugin() //ÈÈ¸üĞÂ
+	]
 };
