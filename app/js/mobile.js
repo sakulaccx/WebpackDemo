@@ -33,7 +33,7 @@ var myScroll = new IScroll(".iscroll_obj",{
     scrollbars: true,
     disableMouse: true, //移动端不需要监听鼠标事件
     disablePointer: true, //移动端不需要监听指针
-    tap: true //移动端要打开tap事件监听
+    tap: true, //移动端要打开tap事件监听
 });
 
 //测试template
