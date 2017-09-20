@@ -14,7 +14,7 @@ module.exports = {
 	output: { //output 的配置项和 context 没有关系，建议配置为绝对路径（相对路径不会报错）
 		path: _path.resolve(__dirname, "dist"), //打包输出的路径
 		filename: "./js/[name].js", //打包后的JS [name]-[hash]在每次打包生成不同的hash，更新浏览器缓存
-		publicPath: "/"
+		publicPath: "/" //设置发布路径为根目录，CSS和HTML中的相对图片路径就能找到正确的引用
 	},
 	devtool: "eval-source-map", //source map 配置
 	devServer: { //静态页面服务配置
@@ -29,8 +29,8 @@ module.exports = {
 		inline: true, //实时刷新(不重启服务直接刷新)，需配合HotModuleReplacementPlugin()插件一起使用，下方plugin中必须调用该webpack自带的插件
 		historyApiFallback: true, //所有的历史返回都指向index.html，适合单页应用
 		compress: true, //是否压缩HTML
-		contentBase: _path.resolve(__dirname, "dist/view"), //自动生成入口HTML的目录		
-		publicPath: "/", //设置公用静态文件目录为根目录，HTML中的相对路径的静态资源就可以正确引用了，否则html必须在根目录下(dist/index.html)
+		contentBase: _path.resolve(__dirname, "dist/view"), //自动生成入口HTML的目录 这里HTML的入口文件是根目录dist下的view目录	
+		publicPath: "/", //设置公用静态文件目录为根目录，HTML中的相对路径的静态资源就可以正确引用了，否则html必须在根目录下(dist/index.html)或者打下级目录(view/index.html)
 	},
 	module: {
 		noParse: function(content) { //防止 webpack 解析那些任何与给定正则表达式相匹配的文件
@@ -59,6 +59,7 @@ module.exports = {
 				//use中的配置将小于8192byte的图片转成base64码，以编码.名称.扩展名重命名
 				//配合下面的html-withimg-loader可以修改生成后的文件
 				//url-loader只适用于CSS和JS中引入的图片
+				//name参数是打包后保存的路径，如果不写则保存在output中的path下
 				test: /\.(jpe?g|png|gif|svg)$/i,
 				use: "url-loader?limit=8192&name=images/[hash:8].[name].[ext]"
 			},
