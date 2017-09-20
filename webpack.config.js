@@ -13,7 +13,8 @@ module.exports = {
 	},
 	output: { //output 的配置项和 context 没有关系，建议配置为绝对路径（相对路径不会报错）
 		path: _path.resolve(__dirname, "dist"), //打包输出的路径
-		filename: "js/[name].js", //打包后的JS [name]-[hash]在每次打包生成不同的hash，更新浏览器缓存		
+		filename: "./js/[name].js", //打包后的JS [name]-[hash]在每次打包生成不同的hash，更新浏览器缓存
+		publicPath: "/"
 	},
 	devtool: "eval-source-map", //source map 配置
 	devServer: { //静态页面服务配置
@@ -47,25 +48,27 @@ module.exports = {
 				}),
 				exclude: /node_modules/ //排除node_modules
 			},
-			/*{
-				//html模板加载器，可以处理引用的静态资源，默认配置参数attrs=img:src，处理图片的src引用的资源
-                //比如你配置，attrs=img:src img:data-src就可以一并处理data-src引用的资源了，就像下面这样
-				test: /\.html$/,
-                use: "html?attrs=img:src img:data-src"
-			},
+			
 			{
                 //文件加载器，处理文件静态资源
                 test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                 use: "file-loader?name=./fonts/[name].[ext]"
-            },*/
+            },
 			{
-				//图片加载器，雷同file-loader，更适合图片，可以将较小的图片转成base64，减少http请求
-				//如下配置，将小于8192byte的图片转成base64码
+				//图片加载器url-loader，必须先引入file-loader才能正常loader图片
+				//use中的配置将小于8192byte的图片转成base64码，以编码.名称.扩展名重命名
+				//配合下面的html-withimg-loader可以修改生成后的文件
+				//url-loader只适用于CSS和JS中引入的图片
 				test: /\.(jpe?g|png|gif|svg)$/i,
-				use: [
-					"url?limit=8192&name=img/[hash:8].[name].[ext]",
-					"image-webpack"
-				]
+				use: "url-loader?limit=8192&name=images/[hash:8].[name].[ext]"
+			},
+			{
+				//html模板加载器，可以处理引用的静态资源，默认配置参数attrs=img:src，处理图片的src引用的资源
+				//配合url-loader一起使用，将生成hash后的重命名对应文件引入页面
+                //比如你配置，attrs=img:src img:data-src就可以一并处理data-src引用的资源了，就像下面这样
+                //处理html中图片引入
+				test: /\.html$/,
+                use: "html-withimg-loader"
 			},
 		]
 	},

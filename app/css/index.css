@@ -20,10 +20,9 @@
     font-size: 20px;
     color: #000;
 }
-.date {
+.test_div {
     margin-top: 20px;
-    width: 200px;
-    line-height: 30px;
+    
     font-size: 12px;
 }
 .test_datejs {
@@ -42,7 +41,7 @@
 }
 .flatpickr_input {
     display: inline-block;
-    width: 100%;
+    width: 200px;
     height: 30px;
     vertical-align: middle;
     color: #4e4c4c;
@@ -75,4 +74,14 @@
 }
 .tpl_test{
     margin-top: 20px;
+}
+.test_img{
+    width: 100px;
+    height: 100px;
+}
+.img_bg{
+    width: 100px;
+    height: 100px;
+    background: url(../images/b.png) 0 0 no-repeat;
+    background-size: 100% 100%;
 }
